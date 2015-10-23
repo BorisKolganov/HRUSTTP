@@ -5,7 +5,6 @@ authors = ["BorisKolganov <bkolganov@me.com>"]
 
 [dependencies]
 threadpool = "0.1"
-mio = "0.4"
 bytes = "*"
 chrono = "0.2"
 argparse = "*"

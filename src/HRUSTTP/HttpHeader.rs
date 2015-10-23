@@ -8,11 +8,12 @@ pub struct HttpHeader {
     pub version: String,
 }
 impl HttpHeader {
-    pub fn new(stream: &mut TcpStream) -> HttpHeader {
+    pub fn new(stream: &mut TcpStream) -> Option<HttpHeader> {
         let mut st = String::new();
         loop {
             let mut temp = [0; 256];
             match stream.read(&mut temp) {
+                Ok(0) => {break;},
                 Ok(m) => {
                     st.push_str(&String::from_utf8_lossy(&temp[0..m]));
                     match st.find("\r\n\r\n") {
@@ -25,8 +26,12 @@ impl HttpHeader {
                 Err(e) => println!("{:?}", e)
             }
         }
-        let st: Vec<&str> = st.lines().next().unwrap().split_whitespace().collect();
-        HttpHeader { method: st[0].to_string(), path: st[1].to_string(), version: st[2].to_string() }
+        if !st.is_empty() {
+            let st: Vec<&str> = st.lines().next().unwrap().split_whitespace().collect();
+            Some(HttpHeader { method: st[0].to_string(), path: st[1].to_string(), version: st[2].to_string() })
+        } else {
+            None
+        }
 
     }
 }

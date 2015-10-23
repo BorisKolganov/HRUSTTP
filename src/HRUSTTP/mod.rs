@@ -30,8 +30,7 @@ impl HRUSTTP {
     }
 
     fn handle(mut stream: TcpStream, mut root: String) {
-        let head = HttpHeader::HttpHeader::new(&mut stream);
-
+        let head = HttpHeader::HttpHeader::new(&mut stream).unwrap();
         let mut response = HttpResponse::HttpResponseBuilder::new();
         response.version(head.version.clone())
             .date(utc::UTC::now())
@@ -111,12 +110,10 @@ impl HRUSTTP {
             },
 
         };
-
     }
     pub fn go(&self) {
         let tcp = TcpListener::bind(&*self.ip).unwrap();
         println!("Welcome to HRUSTTP \r\nBind: {}", self.ip);
-
         if self.n_cpu == 0 {
             println!("You start with thread per request");
             for stream in tcp.incoming() {
@@ -126,7 +123,8 @@ impl HRUSTTP {
                         thread::spawn(move || {
                             HRUSTTP::handle(stream, root);
                         });
-                    }
+
+                    },
                     Err(e) => {
                         println!("ERROR {}", e);
                     }
@@ -141,7 +139,8 @@ impl HRUSTTP {
                         let root = self.rootdir.clone();
                         pool.execute(move || {
                             HRUSTTP::handle(stream, root)
-                        })
+                        });
+
                     },
                     Err(e) => {
                         println!("ERROR {}", e);

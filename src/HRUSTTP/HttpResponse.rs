@@ -85,35 +85,11 @@ impl HttpResponseBuilder {
 
 impl HttpResponse {
     pub fn to_string(&self) -> String {
-        let date = format!("{}, {} {} {} {:02}:{:02}:{:02} GMT", match self.date.weekday() {
-            Weekday::Mon => "Mon",
-            Weekday::Tue => "Tue",
-            Weekday::Wed => "Wed",
-            Weekday::Thu => "Thu",
-            Weekday::Fri => "Fri",
-            Weekday::Sat => "Sat",
-            Weekday::Sun => "Sun",
-        }, self.date.day(), match self.date.month() {
-            1 => "Jan",
-            2 => "Feb",
-            3 => "Mar",
-            4 => "Apr",
-            5 => "May",
-            6 => "Jun",
-            7 => "Jul",
-            8 => "Aug",
-            9 => "Sep",
-            10 => "Oct",
-            11 => "Nov",
-            12 => "Dec",
-            _ => panic!("OMG"),
-        }, self.date.year(), self.date.hour(), self.date.minute(), self.date.second());
-
         format!("{} {} {}\r\nDate: {}\r\nServer: {}\r\n{}Connection: {}\r\n\r\n",
         self.version,
         self.code,
         self.description,
-        date,
+        self.date.format("%a, %b %e %Y %T GMT"),
         self.server,
         match self.content_type.as_ref() {
             "" => {

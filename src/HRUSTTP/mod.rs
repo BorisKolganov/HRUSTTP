@@ -42,7 +42,7 @@ impl HRUSTTP {
             m @ "GET" | m @ "HEAD" => {
                 match head.path.find("..") {
                     Some(_) => {
-                        stream.write(response.code(403).description("you shoud not pass".into()).finalize().to_string().as_bytes()).ok().unwrap();
+                        stream.write(response.code(403).description("you shall not pass".into()).finalize().to_string().as_bytes()).ok().unwrap();
                     },
                     None => {
                         root.push_str(

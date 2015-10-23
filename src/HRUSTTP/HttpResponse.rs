@@ -1,4 +1,4 @@
-use HRUSTTP::chrono::{DateTime, Weekday, Datelike, Timelike};
+use HRUSTTP::chrono::DateTime;
 use HRUSTTP::chrono::offset::utc;
 
 
@@ -93,7 +93,7 @@ impl HttpResponse {
         self.server,
         match self.content_type.as_ref() {
             "" => {
-                "\r\n".to_string()
+                "".to_string()
             },
 
             _ => {

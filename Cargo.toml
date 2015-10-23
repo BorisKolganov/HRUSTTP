@@ -1,0 +1,15 @@
+[package]
+name = "httpd"
+version = "0.1.0"
+authors = ["BorisKolganov <bkolganov@me.com>"]
+
+[dependencies]
+threadpool = "0.1"
+mio = "0.4"
+bytes = "*"
+chrono = "0.2"
+argparse = "*"
+
+
+[dependencies.url]
+git = "https://github.com/servo/rust-url"
